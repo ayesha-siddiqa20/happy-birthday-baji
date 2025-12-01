@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>h a p p y  b i r t h d a y</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f9f9f9; /* Very slight off-white paper look */
+            --ink-color: #222;
+            --accent-color: #8fb1cc; /* Muted blue for the hat vibe */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: 'Gaegu', cursive; /* The doodle font */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card-content {
+            display: none;
+        }
+
+        /* Start button styling */
+        .start-btn {
+            margin-top: 80px;
+            margin-bottom: 40px;
+            background: none;
+            border: 1.5px solid var(--ink-color);
+            border-radius: 999px;
+            padding: 10px 25px;
+            font-family: 'Gaegu', cursive;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        /* The Main Card Container */
+        .container {
+            width: 100%;
+            max-width: 400px; /* Mobile width constraint */
+            text-align: center;
+        }
+
+        /* The "happy birthday" text styling */
+        h1 {
+            font-weight: 300;
+            font-size: 1.5rem;
+            letter-spacing: 8px; /* The wide spacing from your photo */
+            margin-bottom: 40px;
+            margin-top: 40px;
+        }
+
+        /* The Image Area */
+        .doodle-frame {
+            margin: 20px auto 40px auto;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .doodle-frame img {
+            width: 100%;
+            height: auto;
+            /* This gives it a slightly hand-drawn imperfect rotation */
+            transform: rotate(-2deg); 
+        }
+
+        /* The Envelope Grid */
+        .envelope-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .envelope-grid > div:last-child {
+            grid-column: 2;
+        }
+
+
+        .envelope {
+            aspect-ratio: 4/3;
+            border: 1.5px solid var(--ink-color);
+            background: #fff;
+            border-radius: 4px; /* Slightly rounded corners */
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.1); /* Hard shadow, not blurry */
+        }
+
+        .envelope:active {
+            transform: scale(0.95);
+        }
+
+        /* The "V" shape on the envelope */
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-bottom: 1px solid transparent; 
+            /* Simple CSS drawing of envelope flap */
+            background-image: linear-gradient(to bottom right, transparent 50%, transparent 50%),
+                              linear-gradient(to bottom left, transparent 50%, transparent 50%); 
+        }
+        
+        /* A little heart sticker on the envelope */
+        .sticker {
+            font-size: 14px;
+            z-index: 2;
+        }
+
+        /* The Name Tag under the envelope */
+        .sender-name {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* The Popup Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95); /* High opacity white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 100;
+
+                /* NEW: allow scrolling if needed */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .note-card {
+            background: #fff;
+            border: 1.5px solid var(--ink-color);
+            padding: 30px;
+            width: 80%;
+            max-width: 550px;
+            text-align: center;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+            transform: rotate(1deg);
+
+            max-height: 80vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .note-content {
+            font-size: 1.4rem;
+            line-height: 1.6;
+
+                /* NEW: good for very long, unbroken words/URLs */
+            word-wrap: break-word;
+            white-space: pre-line; /* preserves line breaks if you add \n in messages */
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            background: none;
+            border: 1px solid var(--ink-color);
+            padding: 8px 20px;
+            font-family: 'Gaegu', cursive;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 480px) {
+          .note-card {
+              padding: 20px;
+              max-width: 100%;
+          }
+          .note-content {
+              font-size: 1.2rem;
+          }
+      }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Start Screen Button -->
+        <button id="start-btn" class="start-btn">
+            click here for a surpise ;)
+        </button>
+
+        <!-- Hidden content that appears AFTER button click -->
+        <div id="card-content" class="card-content">
+            <h1>to my beautiful sister</h1>
+
+            <div class="doodle-frame">
+                <img src="cat.png" alt="Birthday Duck" style="max-width: 200px;">
+            </div>
+
+            <p style="margin-bottom: 20px; font-size: 1.1rem;">open your letters:</p>
+
+            <div class="envelope-grid" id="grid"></div>
+        </div>
+    </div>
+
+    <!-- Background music -->
+    <audio id="bg-music" src="taylor.mp3" loop preload="auto"></audio>
+
+    <div class="modal-overlay" id="modal">
+        <div class="note-card">
+            <p class="note-content" id="message-text">Message goes here...</p>
+            <p style="font-size: 0.9rem; margin-top:15px;">— <span id="sender-text">Name</span></p>
+            <button class="close-btn" onclick="closeNote()">close</button>
+        </div>
+    </div>
+
+    <script>
+        // ---------------------------------------------------------
+        // MESSAGES
+        // ---------------------------------------------------------
+        const messages = [
+            {
+              name: "Mama",
+              text: "Happy birthday, my beautiful daughter. You are truly a blessing in my life, and I am realizing it more as I get older.\n\nMay Allah SWT shower His endless blessings on you, since you deserve the very best. Aameen."
+            },
+            {
+              name: "Baba",
+              text: "My Fatima, my first-born child,\nThe one who made my heart run wild,\nWho taught us love's untested scope,\nAnd filled a father's soul with hope.\n\nI watched you grow, from small to tall,\nYou learned to walk, and then to crawl,\nAnd led the way for those behind —\na stronger bond I'll never find.\n\nNow at twenty-six, you stand so sure,\na vibrant spirit, bright and pure.\nThe little girl I used to know\ninto this brilliant woman grew.\n\nSo on this day, I want to say,\nI'm proud of you in every way."
+            },
+            {
+              name: "Ayesha",
+              text: "I don't say it enough,\n\nbut I love you more than life itself.\nYou've always been home to me —\nyou've given me the quiet,\nconstant kind of love,\nthe kind of support that makes it easy\nto fall head-first into uncertainty\nknowing you'd always be there.\n\nYou are my best friend,\na piece of my soul,\nmy better half.\n\nYou were the first person I ever wanted to be.\nYou've always paved the way for Taha and me,\nand I am constantly in awe of the woman you’ve become.\nI am so incredibly proud of your growth,\nof your strength,\nof the softness you carry through this world.\n\nI haven't thanked you enough\nfor all the times\nyou held my hand through my darkest days,\nfor the joy of hearing your voice that feels like safety,\nand for your laughter\nthat tugs at the best parts of my heart.\n\nI truly can't imagine a life without you —\nI have never known a life without you.\n\nYou fill my days with so much joy and laughter\nand make all my worries go away.\nThere are very few people in my life\nI can lay my whole heart bare for,\nand you are one of them.\n\nI love you so, so much."
+            },
+            { name: "Taha", text: "Good evening Ms Baji Auntie,\nCongrats on turning 26 (let's reach for 40)\nStay active unc and keep it moving,\n arthritis can't attack what it can't catch\nDw too much you're built for greatness.\n\nJokes aside, enjoy your honeymoon,\n you're growing and glowing (creaky joints and all)\nYour knees may betray you, but I never will.\nWagwan queen.\n\nLove,\n Shakespeare" },
+
+        ];
+        // ---------------------------------------------------------
+
+        const grid = document.getElementById('grid');
+        const modal = document.getElementById('modal');
+        const msgText = document.getElementById('message-text');
+        const senderText = document.getElementById('sender-text');
+
+        // Create the envelopes
+        messages.forEach((msg) => {
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'flex';
+            wrapper.style.flexDirection = 'column';
+            wrapper.style.alignItems = 'center';
+
+            const env = document.createElement('div');
+            env.className = 'envelope';
+            env.innerHTML = '<span class="sticker">♥</span>';
+            
+            env.onclick = () => openNote(msg);
+
+            const label = document.createElement('span');
+            label.className = 'sender-name';
+            label.innerText = msg.name;
+
+            wrapper.appendChild(env);
+            wrapper.appendChild(label);
+            grid.appendChild(wrapper);
+        });
+
+        function openNote(msg) {
+            msgText.innerText = msg.text;
+            senderText.innerText = msg.name;
+            modal.classList.add('open');
+        }
+
+        function closeNote() {
+            modal.classList.remove('open');
+        }
+
+        // ---------------------------------------------------------
+        // START BUTTON + MUSIC LOGIC
+        // ---------------------------------------------------------
+        const startBtn = document.getElementById('start-btn');
+        const cardContent = document.getElementById('card-content');
+        const bgMusic = document.getElementById('bg-music');
+
+        startBtn.addEventListener('click', () => {
+            // Reveal the cards section
+            cardContent.style.display = 'block';
+            // Hide the button
+            startBtn.style.display = 'none';
+
+            // Try to play music (allowed because user clicked)
+            if (bgMusic) {
+                bgMusic.play().catch(() => {
+                    // If blocked, it's fine; card still works
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
